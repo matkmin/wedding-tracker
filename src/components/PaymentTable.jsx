@@ -39,25 +39,25 @@ export default function PaymentTable({
     switch (status) {
       case "Belum":
         return (
-          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-200 whitespace-nowrap">
             Belum
           </span>
         );
       case "Deposit":
         return (
-          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-amber-50 text-amber-600 border border-amber-200 whitespace-nowrap">
             Deposit
           </span>
         );
       case "Selesai":
         return (
-          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
+          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 whitespace-nowrap">
             Selesai
           </span>
         );
       default:
         return (
-          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-100 text-gray-600">
+          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">
             {status}
           </span>
         );
@@ -71,12 +71,12 @@ export default function PaymentTable({
           Senarai Pembayaran
         </h2>
 
-        <div className="flex gap-1 bg-[#f9fafb] p-1 rounded-md border border-[#e5e7eb]">
+        <div className="flex flex-wrap gap-1 bg-[#f9fafb] p-1 rounded-md border border-[#e5e7eb]">
           {["All", "Belum", "Deposit", "Selesai"].map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-3 py-1 text-xs rounded transition-colors ${
+              className={`px-3 py-1 text-xs rounded transition-colors whitespace-nowrap flex-1 sm:flex-none ${
                 filterStatus === status
                   ? "bg-white text-slate-800 shadow-sm border border-[#e5e7eb]"
                   : "text-slate-500 hover:text-slate-700"
@@ -88,19 +88,19 @@ export default function PaymentTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs text-left text-slate-600">
+      <div className="overflow-x-auto w-full">
+        <table className="w-full text-xs text-left text-slate-600 min-w-[750px]">
           <thead className="bg-white text-slate-400 border-b border-[#e5e7eb]">
             <tr>
-              <th className="px-4 py-3 font-medium">Perkara</th>
-              <th className="px-4 py-3 font-medium">Vendor</th>
-              <th className="px-4 py-3 font-medium text-right">Jumlah</th>
-              <th className="px-4 py-3 font-medium text-right">Deposit</th>
-              <th className="px-4 py-3 font-medium text-right">Baki</th>
-              <th className="px-4 py-3 font-medium">Tarikh</th>
-              <th className="px-4 py-3 font-medium text-center">Status</th>
-              <th className="px-4 py-3 font-medium">Nota</th>
-              <th className="px-4 py-3 font-medium text-center">Tindakan</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Perkara</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Vendor</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Jumlah</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Deposit</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Baki</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Tarikh</th>
+              <th className="px-4 py-3 font-medium text-center whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Nota</th>
+              <th className="px-4 py-3 font-medium text-center whitespace-nowrap">Tindakan</th>
             </tr>
           </thead>
           <tbody>
@@ -129,15 +129,15 @@ export default function PaymentTable({
                     key={p.id}
                     className={`${zebraClass} hover:bg-[#f3f4f6] transition-colors border-b border-[#e5e7eb] last:border-0`}
                   >
-                    <td className="px-4 py-3 font-medium text-slate-800 flex items-center gap-1.5">
+                    <td className="px-4 py-3 font-medium text-slate-800 flex items-center gap-1.5 whitespace-nowrap">
                       {isOverdue && <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" title="Tamat tempoh"></span>}
                       {p.perkara}
                     </td>
-                    <td className="px-4 py-3">{p.vendor || "-"}</td>
-                    <td className="px-4 py-3 text-right">{formatRM(p.jumlah_penuh)}</td>
-                    <td className="px-4 py-3 text-right">{formatRM(p.deposit_dibayar)}</td>
-                    <td className="px-4 py-3 text-right text-slate-800">{formatRM(baki)}</td>
-                    <td className={`px-4 py-3 ${isOverdue ? "text-red-500" : ""}`}>
+                    <td className="px-4 py-3 whitespace-nowrap">{p.vendor || "-"}</td>
+                    <td className="px-4 py-3 text-right whitespace-nowrap">{formatRM(p.jumlah_penuh)}</td>
+                    <td className="px-4 py-3 text-right whitespace-nowrap">{formatRM(p.deposit_dibayar)}</td>
+                    <td className="px-4 py-3 text-right text-slate-800 whitespace-nowrap">{formatRM(baki)}</td>
+                    <td className={`px-4 py-3 whitespace-nowrap ${isOverdue ? "text-red-500" : ""}`}>
                       {formatDate(p.tarikh_bayar)}
                     </td>
                     <td className="px-4 py-3 text-center">{getStatusBadge(p.status)}</td>

@@ -46,19 +46,19 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
 
   return (
     <div className="fixed inset-0 bg-slate-900/20 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg border border-[#e5e7eb] text-sm">
-        <div className="px-5 py-4 border-b border-[#e5e7eb] flex justify-between items-center bg-[#f9fafb] rounded-t-lg">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg border border-[#e5e7eb] text-sm overflow-y-auto max-h-[90vh]">
+        <div className="px-4 py-3 sm:px-5 sm:py-4 border-b border-[#e5e7eb] flex justify-between items-center bg-[#f9fafb] rounded-t-lg sticky top-0 z-10">
           <h2 className="font-medium text-slate-800">
             {payment ? "Edit Pembayaran" : "Tambah Pembayaran"}
           </h2>
-          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 text-lg leading-none">
+          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 text-lg leading-none p-1">
             &times;
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
               <label className="block text-xs text-slate-500 mb-1">Perkara *</label>
               <input
                 type="text"
@@ -71,7 +71,7 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
               />
             </div>
 
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="block text-xs text-slate-500 mb-1">Vendor</label>
               <input
                 type="text"
@@ -135,7 +135,7 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
               </select>
             </div>
 
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="block text-xs text-slate-500 mb-1">Nota</label>
               <textarea
                 name="nota"
@@ -151,13 +151,13 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+              className="px-4 py-2 sm:py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-1.5 rounded-md text-xs font-medium bg-[#1e293b] text-white hover:bg-slate-800 transition-colors"
+              className="px-4 py-2 sm:py-1.5 rounded-md text-xs font-medium bg-[#1e293b] text-white hover:bg-slate-800 transition-colors"
             >
               Simpan
             </button>
