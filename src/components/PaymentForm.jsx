@@ -41,13 +41,13 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-          <h2 className="text-xl font-semibold text-gray-800">
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200">
+        <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+          <h2 className="text-xl font-semibold text-slate-800">
             {payment ? 'Edit Pembayaran' : 'Tambah Pembayaran'}
           </h2>
-          <button onClick={onCancel} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 transition-colors">
             &times;
           </button>
         </div>
@@ -55,32 +55,32 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Perkara *</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Perkara *</label>
               <input
                 type="text"
                 name="perkara"
                 required
                 value={formData.perkara}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
                 placeholder="Contoh: Katering, Pelamin..."
               />
             </div>
             
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Vendor</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Vendor</label>
               <input
                 type="text"
                 name="vendor"
                 value={formData.vendor}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
                 placeholder="Nama syarikat/vendor"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Jumlah Penuh (RM) *</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Jumlah Penuh (RM) *</label>
               <input
                 type="number"
                 name="jumlah_penuh"
@@ -89,12 +89,12 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
                 step="0.01"
                 value={formData.jumlah_penuh}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Deposit Dibayar (RM)</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Deposit Dibayar (RM)</label>
               <input
                 type="number"
                 name="deposit_dibayar"
@@ -102,28 +102,28 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
                 step="0.01"
                 value={formData.deposit_dibayar}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tarikh Bayar</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Tarikh Bayar</label>
               <input
                 type="date"
                 name="tarikh_bayar"
                 value={formData.tarikh_bayar}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900 bg-white"
               >
                 <option value="Belum">Belum</option>
                 <option value="Deposit">Deposit</option>
@@ -132,29 +132,29 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
             </div>
             
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nota</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Nota</label>
               <textarea
                 name="nota"
                 rows="3"
                 value={formData.nota}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
                 placeholder="Nota tambahan..."
               ></textarea>
             </div>
           </div>
           
-          <div className="pt-4 flex justify-end space-x-3 border-t border-gray-200">
+          <div className="pt-5 flex justify-end space-x-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 font-medium"
+              className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 font-medium transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 font-medium"
+              className="px-4 py-2 border border-transparent rounded-lg shadow-sm text-white bg-rose-500 hover:bg-rose-600 font-medium transition-colors"
             >
               Simpan
             </button>

@@ -1,5 +1,3 @@
-import React from "react";
-
 const formatRM = (amount) => {
   return new Intl.NumberFormat("ms-MY", {
     style: "currency",
@@ -23,46 +21,54 @@ export default function SummaryCards({ payments }) {
   const countSelesai = payments.filter((p) => p.status === "Selesai").length;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h3 className="text-gray-500 text-sm font-medium">Total Keseluruhan</h3>
-        <p className="text-2xl font-bold text-gray-900 mt-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <h3 className="text-slate-500 text-sm font-medium uppercase tracking-wider">
+          Total Keseluruhan
+        </h3>
+        <p className="text-2xl font-bold text-slate-800 mt-2">
           {formatRM(totalKeseluruhan)}
         </p>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h3 className="text-gray-500 text-sm font-medium">Total Dah Bayar</h3>
-        <p className="text-2xl font-bold text-green-600 mt-2">
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <h3 className="text-slate-500 text-sm font-medium uppercase tracking-wider">
+          Total Dah Bayar
+        </h3>
+        <p className="text-2xl font-bold text-emerald-600 mt-2">
           {formatRM(totalDahBayar)}
         </p>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h3 className="text-gray-500 text-sm font-medium">Baki Perlu Bayar</h3>
-        <p className="text-2xl font-bold text-red-600 mt-2">
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <h3 className="text-slate-500 text-sm font-medium uppercase tracking-wider">
+          Baki Perlu Bayar
+        </h3>
+        <p className="text-2xl font-bold text-rose-500 mt-2">
           {formatRM(bakiPerluBayar)}
         </p>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h3 className="text-gray-500 text-sm font-medium">Status Item</h3>
-        <div className="mt-2 space-y-1 text-sm font-medium">
-          <div className="flex justify-between items-center text-red-600">
-            <span>Belum:</span>
-            <span className="bg-red-100 px-2 py-0.5 rounded-full">
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <h3 className="text-slate-500 text-sm font-medium uppercase tracking-wider mb-3">
+          Status Item
+        </h3>
+        <div className="space-y-2 text-sm font-medium">
+          <div className="flex justify-between items-center">
+            <span className="text-slate-600">Belum</span>
+            <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">
               {countBelum}
             </span>
           </div>
-          <div className="flex justify-between items-center text-yellow-600">
-            <span>Deposit:</span>
-            <span className="bg-yellow-100 px-2 py-0.5 rounded-full">
+          <div className="flex justify-between items-center">
+            <span className="text-slate-600">Deposit</span>
+            <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md">
               {countDeposit}
             </span>
           </div>
-          <div className="flex justify-between items-center text-green-600">
-            <span>Selesai:</span>
-            <span className="bg-green-100 px-2 py-0.5 rounded-full">
+          <div className="flex justify-between items-center">
+            <span className="text-slate-600">Selesai</span>
+            <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md">
               {countSelesai}
             </span>
           </div>

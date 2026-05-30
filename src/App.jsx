@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
+import { Plus } from "lucide-react";
 import SummaryCards from "./components/SummaryCards";
 import PaymentTable from "./components/PaymentTable";
 import PaymentForm from "./components/PaymentForm";
+import Countdown from "./components/Countdown";
+import Charts from "./components/Charts";
 
 function App() {
   const [payments, setPayments] = useState([]);
@@ -91,42 +94,66 @@ function App() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Wedding Payment Tracker
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Urus pembayaran perbelanjaan perkahwinan anda
-            </p>
-          </div>
-          <button
-            onClick={handleAdd}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow font-medium transition-colors"
-          >
-            + Tambah Bayaran
-          </button>
-        </div>
+  const totalKeseluruhan = payments.reduce(
+    (sum, p) => sum + (Number(p.jumlah_penuh) || 0),
+    0,
+  );
+  const totalDahBayar = payments.reduce(
+    (sum, p) => sum + (Number(p.deposit_dibayar) || 0),
+    0,
+  );
+  const bakiPerluBayar = totalKeseluruhan - totalDahBayar;
 
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center shadow-sm">
+              <span className="text-white font-bold text-xl leading-none">
+                W
+              </span>
+            </div>
+            <h1 className="text-xl font-bold text-slate-800 tracking-tight">
+              Wedding Tracker
+            </h1>
+          </div>
+          <div className="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
+            30 Ogos 2026
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
           <div
-            className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
+            className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r-lg shadow-sm"
             role="alert"
           >
-            <p>{error}</p>
+            <p className="font-medium">{error}</p>
           </div>
         )}
 
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="flex justify-center items-center py-32">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-rose-500"></div>
           </div>
         ) : (
           <>
+            <Countdown bakiPerluBayar={bakiPerluBayar} />
+
             <SummaryCards payments={payments} />
+
+            {payments.length > 0 && (
+              <Charts
+                payments={payments}
+                totalKeseluruhan={totalKeseluruhan}
+                totalDahBayar={totalDahBayar}
+                bakiPerluBayar={bakiPerluBayar}
+              />
+            )}
+
             <PaymentTable
               payments={payments}
               onEdit={handleEdit}
@@ -136,7 +163,16 @@ function App() {
             />
           </>
         )}
-      </div>
+      </main>
+
+      {/* Floating Add Button */}
+      <button
+        onClick={handleAdd}
+        className="fixed bottom-8 right-8 w-14 h-14 bg-rose-500 hover:bg-rose-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 z-40 focus:outline-none focus:ring-4 focus:ring-rose-500/30"
+        title="Tambah Bayaran"
+      >
+        <Plus size={28} />
+      </button>
 
       {isFormOpen && (
         <PaymentForm
