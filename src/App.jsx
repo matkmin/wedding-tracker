@@ -1,122 +1,155 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from "react";
+import { supabase } from "./lib/supabase";
+import SummaryCards from "./components/SummaryCards";
+import PaymentTable from "./components/PaymentTable";
+import PaymentForm from "./components/PaymentForm";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingPayment, setEditingPayment] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("All");
+
+  const fetchPayments = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("payments")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setPayments(data || []);
+    } catch (error) {
+      console.error("Error fetching payments:", error.message);
+      setError(
+        "Gagal mengambil data. Sila periksa sambungan internet atau tetapan Supabase.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPayments();
+  }, []);
+
+  const handleAdd = () => {
+    setEditingPayment(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (payment) => {
+    setEditingPayment(payment);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const { error } = await supabase.from("payments").delete().eq("id", id);
+      if (error) throw error;
+      setPayments(payments.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Error deleting payment:", error.message);
+      alert("Gagal memadam data.");
+    }
+  };
+
+  const handleSavePayment = async (paymentData) => {
+    try {
+      if (editingPayment) {
+        // Update
+        const { data, error } = await supabase
+          .from("payments")
+          .update(paymentData)
+          .eq("id", editingPayment.id)
+          .select()
+          .single();
+
+        if (error) throw error;
+        setPayments(
+          payments.map((p) => (p.id === editingPayment.id ? data : p)),
+        );
+      } else {
+        // Insert
+        const { data, error } = await supabase
+          .from("payments")
+          .insert([paymentData])
+          .select()
+          .single();
+
+        if (error) throw error;
+        setPayments([data, ...payments]);
+      }
+      setIsFormOpen(false);
+      setEditingPayment(null);
+    } catch (error) {
+      console.error("Error saving payment:", error.message);
+      alert("Gagal menyimpan data.");
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Wedding Payment Tracker
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Urus pembayaran perbelanjaan perkahwinan anda
+            </p>
+          </div>
+          <button
+            onClick={handleAdd}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow font-medium transition-colors"
+          >
+            + Tambah Bayaran
+          </button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        {error && (
+          <div
+            className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
+            role="alert"
+          >
+            <p>{error}</p>
+          </div>
+        )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <>
+            <SummaryCards payments={payments} />
+            <PaymentTable
+              payments={payments}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+            />
+          </>
+        )}
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {isFormOpen && (
+        <PaymentForm
+          payment={editingPayment}
+          onSave={handleSavePayment}
+          onCancel={() => {
+            setIsFormOpen(false);
+            setEditingPayment(null);
+          }}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
