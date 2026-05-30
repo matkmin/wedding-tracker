@@ -36,7 +36,11 @@ function App() {
   };
 
   useEffect(() => {
-    fetchPayments();
+    // Avoid synchronous state updates inside the effect by using an async wrapper or set timeout
+    const loadData = async () => {
+      await fetchPayments();
+    };
+    loadData();
   }, []);
 
   const handleAdd = () => {
