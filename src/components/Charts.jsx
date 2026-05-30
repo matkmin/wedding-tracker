@@ -100,7 +100,7 @@ export default function Charts({
       <div className="bg-white p-5 rounded-lg border border-[#e5e7eb] flex-1 md:w-[60%] flex flex-col">
         <h3 className="text-xs text-gray-500 mb-6">Perbelanjaan by Kategori</h3>
         <div className="flex-1 min-h-[220px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart
               data={barData}
               margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
@@ -137,7 +137,7 @@ export default function Charts({
       <div className="bg-white p-5 rounded-lg border border-[#e5e7eb] w-full md:w-[40%] flex flex-col">
         <h3 className="text-xs text-gray-500 mb-2">By Status</h3>
         <div className="flex-1 relative min-h-[160px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie
                 data={donutData}
