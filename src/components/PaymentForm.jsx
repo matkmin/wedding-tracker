@@ -13,7 +13,6 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
 
   useEffect(() => {
     if (payment) {
-      // Use setTimeout to avoid synchronous state update during render
       setTimeout(() => {
         setFormData({
           perkara: payment.perkara || "",
@@ -46,55 +45,46 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200">
-        <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-          <h2 className="text-xl font-semibold text-slate-800">
+    <div className="fixed inset-0 bg-slate-900/20 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg border border-[#e5e7eb] text-sm">
+        <div className="px-5 py-4 border-b border-[#e5e7eb] flex justify-between items-center bg-[#f9fafb] rounded-t-lg">
+          <h2 className="font-medium text-slate-800">
             {payment ? "Edit Pembayaran" : "Tambah Pembayaran"}
           </h2>
-          <button
-            onClick={onCancel}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
-          >
+          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 text-lg leading-none">
             &times;
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="p-5">
+          <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Perkara *
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Perkara *</label>
               <input
                 type="text"
                 name="perkara"
                 required
                 value={formData.perkara}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
-                placeholder="Contoh: Katering, Pelamin..."
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
+                placeholder="Contoh: Katering"
               />
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Vendor
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Vendor</label>
               <input
                 type="text"
                 name="vendor"
                 value={formData.vendor}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
-                placeholder="Nama syarikat/vendor"
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
+                placeholder="Nama syarikat"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Jumlah Penuh (RM) *
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Jumlah Penuh (RM) *</label>
               <input
                 type="number"
                 name="jumlah_penuh"
@@ -103,14 +93,12 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
                 step="0.01"
                 value={formData.jumlah_penuh}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Deposit Dibayar (RM)
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Deposit Dibayar (RM)</label>
               <input
                 type="number"
                 name="deposit_dibayar"
@@ -118,32 +106,28 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
                 step="0.01"
                 value={formData.deposit_dibayar}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Tarikh Bayar
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Tarikh Bayar</label>
               <input
                 type="date"
                 name="tarikh_bayar"
                 value={formData.tarikh_bayar}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Status
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Status</label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900 bg-white"
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800 bg-white"
               >
                 <option value="Belum">Belum</option>
                 <option value="Deposit">Deposit</option>
@@ -152,31 +136,28 @@ export default function PaymentForm({ payment, onSave, onCancel }) {
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Nota
-              </label>
+              <label className="block text-xs text-slate-500 mb-1">Nota</label>
               <textarea
                 name="nota"
-                rows="3"
+                rows="2"
                 value={formData.nota}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg shadow-sm p-2.5 focus:ring-rose-500 focus:border-rose-500 text-slate-900"
-                placeholder="Nota tambahan..."
+                className="w-full border border-[#e5e7eb] rounded-md px-3 py-2 focus:outline-none focus:border-slate-400 text-xs text-slate-800"
               ></textarea>
             </div>
           </div>
 
-          <div className="pt-5 flex justify-end space-x-3 border-t border-slate-200">
+          <div className="mt-6 flex justify-end gap-2 border-t border-[#e5e7eb] pt-4">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 font-medium transition-colors"
+              className="px-4 py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 border border-transparent rounded-lg shadow-sm text-white bg-rose-500 hover:bg-rose-600 font-medium transition-colors"
+              className="px-4 py-1.5 rounded-md text-xs font-medium bg-[#1e293b] text-white hover:bg-slate-800 transition-colors"
             >
               Simpan
             </button>

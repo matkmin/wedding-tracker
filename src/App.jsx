@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 import { Plus } from "lucide-react";
-import SummaryCards from "./components/SummaryCards";
+import SummaryRow from "./components/SummaryRow";
 import PaymentTable from "./components/PaymentTable";
 import PaymentForm from "./components/PaymentForm";
-import Countdown from "./components/Countdown";
 import Charts from "./components/Charts";
 
 function App() {
@@ -27,20 +26,14 @@ function App() {
       setPayments(data || []);
     } catch (error) {
       console.error("Error fetching payments:", error.message);
-      setError(
-        "Gagal mengambil data. Sila periksa sambungan internet atau tetapan Supabase.",
-      );
+      setError("Gagal mengambil data. Sila periksa sambungan internet atau tetapan Supabase.");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // Avoid synchronous state updates inside the effect by using an async wrapper or set timeout
-    const loadData = async () => {
-      await fetchPayments();
-    };
-    loadData();
+    fetchPayments();
   }, []);
 
   const handleAdd = () => {
@@ -67,7 +60,6 @@ function App() {
   const handleSavePayment = async (paymentData) => {
     try {
       if (editingPayment) {
-        // Update
         const { data, error } = await supabase
           .from("payments")
           .update(paymentData)
@@ -76,11 +68,8 @@ function App() {
           .single();
 
         if (error) throw error;
-        setPayments(
-          payments.map((p) => (p.id === editingPayment.id ? data : p)),
-        );
+        setPayments(payments.map((p) => (p.id === editingPayment.id ? data : p)));
       } else {
-        // Insert
         const { data, error } = await supabase
           .from("payments")
           .insert([paymentData])
@@ -98,57 +87,47 @@ function App() {
     }
   };
 
-  const totalKeseluruhan = payments.reduce(
-    (sum, p) => sum + (Number(p.jumlah_penuh) || 0),
-    0,
-  );
-  const totalDahBayar = payments.reduce(
-    (sum, p) => sum + (Number(p.deposit_dibayar) || 0),
-    0,
-  );
+  const totalKeseluruhan = payments.reduce((sum, p) => sum + (Number(p.jumlah_penuh) || 0), 0);
+  const totalDahBayar = payments.reduce((sum, p) => sum + (Number(p.deposit_dibayar) || 0), 0);
   const bakiPerluBayar = totalKeseluruhan - totalDahBayar;
 
+  const weddingDate = new Date('2026-08-30');
+  const today = new Date();
+  const daysDiff = Math.ceil((weddingDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-xl leading-none">
-                W
-              </span>
-            </div>
-            <h1 className="text-xl font-bold text-slate-800 tracking-tight">
+    <div className="min-h-screen bg-[#f8f9fa] font-sans text-slate-900 pb-20">
+      <header className="bg-white border-b border-[#e5e7eb] sticky top-0 z-30">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h1 className="text-sm font-medium text-slate-800">
               Wedding Tracker
             </h1>
           </div>
-          <div className="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
-            30 Ogos 2026
+          <div className="flex items-center gap-3">
+            <div className="text-xs text-slate-500">
+              30 Ogos 2026
+            </div>
+            <div className="text-xs font-medium bg-[#f3f4f6] text-slate-700 px-2.5 py-1 rounded-md">
+              {daysDiff > 0 ? `${daysDiff} hari lagi` : 'Hari ini!'}
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
-          <div
-            className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r-lg shadow-sm"
-            role="alert"
-          >
-            <p className="font-medium">{error}</p>
+          <div className="bg-red-50 border border-red-200 text-red-600 text-xs p-3 mb-6 rounded-lg">
+            <p>{error}</p>
           </div>
         )}
 
         {loading ? (
           <div className="flex justify-center items-center py-32">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-rose-500"></div>
+            <div className="text-xs text-slate-500">Memuatkan data...</div>
           </div>
         ) : (
           <>
-            <Countdown bakiPerluBayar={bakiPerluBayar} />
-
-            <SummaryCards payments={payments} />
-
             {payments.length > 0 && (
               <Charts
                 payments={payments}
@@ -157,6 +136,8 @@ function App() {
                 bakiPerluBayar={bakiPerluBayar}
               />
             )}
+
+            <SummaryRow payments={payments} />
 
             <PaymentTable
               payments={payments}
@@ -169,13 +150,12 @@ function App() {
         )}
       </main>
 
-      {/* Floating Add Button */}
       <button
         onClick={handleAdd}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-rose-500 hover:bg-rose-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 z-40 focus:outline-none focus:ring-4 focus:ring-rose-500/30"
+        className="fixed bottom-8 right-8 w-12 h-12 bg-[#1e293b] hover:bg-slate-800 text-white rounded-full shadow flex items-center justify-center transition-colors z-40 focus:outline-none"
         title="Tambah Bayaran"
       >
-        <Plus size={28} />
+        <Plus size={20} />
       </button>
 
       {isFormOpen && (
