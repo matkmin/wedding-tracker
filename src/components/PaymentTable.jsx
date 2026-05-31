@@ -88,7 +88,8 @@ export default function PaymentTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto w-full">
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto w-full">
         <table className="w-full text-xs text-left text-slate-600 min-w-[750px]">
           <thead className="bg-white text-slate-400 border-b border-[#e5e7eb]">
             <tr>
@@ -165,6 +166,73 @@ export default function PaymentTable({
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="block md:hidden divide-y divide-[#e5e7eb]">
+        {sortedPayments.length === 0 ? (
+          <div className="px-4 py-8 text-center text-xs text-slate-400">
+            Tiada rekod.
+          </div>
+        ) : (
+          sortedPayments.map((p) => {
+            const baki = (Number(p.jumlah_penuh) || 0) - (Number(p.deposit_dibayar) || 0);
+
+            let isOverdue = false;
+            if (p.tarikh_bayar && p.status !== "Selesai") {
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const dueDate = new Date(p.tarikh_bayar);
+              if (dueDate < today) isOverdue = true;
+            }
+
+            return (
+              <div key={p.id} className="p-4 bg-white hover:bg-slate-50 transition-colors">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <div className="font-medium text-sm text-slate-800 flex items-center gap-1.5">
+                      {isOverdue && <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" title="Tamat tempoh"></span>}
+                      {p.perkara}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">{p.vendor || "-"}</div>
+                  </div>
+                  <div>{getStatusBadge(p.status)}</div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3 mb-3 text-xs bg-[#f9fafb] p-3 rounded-md border border-[#e5e7eb]">
+                  <div>
+                    <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-0.5">Jumlah</div>
+                    <div className="font-medium text-slate-800">{formatRM(p.jumlah_penuh)}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-0.5">Deposit</div>
+                    <div className="text-slate-800">{formatRM(p.deposit_dibayar)}</div>
+                  </div>
+                  <div>
+                    <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-0.5">Baki</div>
+                    <div className="font-medium text-slate-800">{formatRM(baki)}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-slate-400 text-[10px] uppercase tracking-wider mb-0.5">Tarikh</div>
+                    <div className={`font-medium ${isOverdue ? "text-red-500" : "text-slate-800"}`}>
+                      {formatDate(p.tarikh_bayar)}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center pt-2">
+                  <div className="text-xs text-slate-500 truncate max-w-[200px]" title={p.nota}>
+                    {p.nota ? `Nota: ${p.nota}` : ""}
+                  </div>
+                  <div className="flex gap-4 text-slate-400">
+                    <button onClick={() => onEdit(p)} className="hover:text-slate-700 transition-colors p-1"><Edit2 size={16} /></button>
+                    <button onClick={() => { if(window.confirm("Padam rekod ini?")) onDelete(p.id) }} className="hover:text-red-500 transition-colors p-1"><Trash2 size={16} /></button>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
