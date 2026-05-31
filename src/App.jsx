@@ -104,11 +104,11 @@ function App() {
               Wedding Tracker
             </h1>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:block text-xs text-slate-500">
+          <div className="flex flex-col items-end sm:flex-row sm:items-center gap-1 sm:gap-3">
+            <div className="text-[10px] sm:text-xs text-slate-500 font-medium">
               30 Ogos 2026
             </div>
-            <div className="text-xs font-medium bg-[#f3f4f6] text-slate-700 px-2 py-1 sm:px-2.5 rounded-md whitespace-nowrap">
+            <div className="text-[10px] sm:text-xs font-medium bg-[#f3f4f6] text-slate-700 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md whitespace-nowrap">
               {daysDiff > 0 ? `${daysDiff} hari lagi` : 'Hari ini!'}
             </div>
           </div>
